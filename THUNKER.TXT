@@ -1,0 +1,65 @@
+4/30/94 
+
+While OS/2 2.X has many wonderful features it has one source of irritation 
+to programmers used to almost any other system. That source of irritation is 
+the fact that somebody at IBM made a poor decision and eliminated the KBD 
+MOU and VIO system calls from the 32 bit version of the operating system. 
+Whatever the reasoning behind this choice, it left the system crippled. 
+I would guess that one of the excuses given for deleting these calls was 
+that command line programs are "obsolete". In addition it was probably also 
+argued that programmers could always create thunks to the existing 16 bit 
+API's if they needed to.
+	Trust me on this; the source code necessary to create the thunks to 
+the almost 100 missing API functions is so ugly that in a controlled test 
+mere exposure to it resulted in the sterilization of frogs at a distance of 
+more than 100 paces. 
+	Fortunately I was able to hide all of this ugliness inside of nice 
+clean little .DLL file so that the rest of you won't have to see it. 
+
+The files in THUNKER.ZIP are:
+
+THUNKER.DLL --- This converts 32 bit calls to 16 bit for you.
+THUNKER.LIB --- This allows 32 bit C & asm to call MOU KBD and VIO functions.
+THUNKER.H   --- This allows C to pretend there are 32 bit MOU KBD & VIO API's.
+THUNKER.DOC --- Obviously this document.
+THNKTEST.C  --- Sample for use of the 32 bit MOU KBD and VIO API's
+THNKTEST.MAK -- Sample make file showing the linking.
+THNKTEST.DEF -- Def file for sample.
+
+	Maybe the fact that this DLL exists will encourage IBM to correct 
+their horrendous blunder and make real 32 bit versions of these functions. 
+In any case, as long as the 16 bit calls exist in the system this .DLL makes 
+them accessible for your use.
+	The only 32 bit C which I have is GNU C. While the header functions 
+correctly with it,I have not tested it to work with commercial C compilers. 
+About the only source of potential trouble would be if some items in 
+THUNKER.H were already defined in your other headers. It is very plain 
+vanilla C - nothing compiler specific about it.
+	There is no reason not to call the functions from assembly code, but
+be aware of the following: 
+
+	1. The function names are preceded by an '_'. EX: _VioWriteTTY
+	2. The stack is left dirty with the calling parms.
+	3. Parms are pushed in reverse order from the 1.x calls
+
+All 3 of the above are for C's benefit.
+
+THIS CODE IS RELEASED INTO THE PUBLIC DOMAIN AND MAY BE USED FOR COMMERCIAL 
+PURPOSES. UNDER NO CIRCUMSTANCES WILL THE AUTHOR BE LIABLE FOR ANY DAMAGES 
+RESULTING FROM THE USE OF THIS CODE.
+
+ABOUT:
+	The code: THUNKER.DLL was written in 32 bit assembly and assembled 
+with MASM 6.0 under OS/2.
+
+	The author: Robert E. Canup II has been involved in the micro 
+computer revolution since the pre-IBM S-100 days as an engineer and 
+programmer. He has held the world record for the fastest micro computer 
+design. 
+
+
+I am interested in any comments about this code including bug reports. 
+My CompuServe number is 73513,216
+
+						Bob
+
